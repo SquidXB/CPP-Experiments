@@ -7,7 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "${file}",  //line to change for mult files
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
