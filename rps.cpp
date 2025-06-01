@@ -1,10 +1,12 @@
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 
 int wins = 0;
 int rounds = 0;
 char x;
 char y;
+char again = 'y';
 
 int userPick() {
     std::cout << "Pick r, p, or s: ";
@@ -117,9 +119,33 @@ int pickWin() {
     return 0;
 }
 
-int main () {
+int replay() {
+    again = 'o';
+    while (again != 'y' && again !='n' && again != 'w') {
+        std::cout << "\nWant to play again? (y/n/w) ";
+        std::cin >> again;
+    }
+    if (again == 'w') { 
+        std::cout << "You have won " << wins << " out of " << rounds << " rounds\n";
+        again = 'y';
+    }
+    else {
+        return 0;
+    }
+    return 0;
+}
+
+int runStuff () {
     userPick();
     cpuPick();
     pickWin();
+    replay();
+    return 0;
+}
+
+int main () {
+    while (again == 'y') {
+    runStuff();
+    }
     return 0;
 }
