@@ -1,72 +1,139 @@
 #include <iostream>
-std::string secretWord;
-int guesses = 5;
-char guess;
-std::string progress;
-std::string sel;
-std::string word;
 
-int enterSecret() {
-    std::cout << "Enter the word of choice: ";
-    std::cin >> secretWord;
-    //std::cout << secretWord << "\n";
-    for (int i=0; i<secretWord.length(); i++) {
-        progress.replace(i, secretWord.length(), "_ ");
+char board[9] = {'1', '2', '3', 
+                  '4', '5', '6', 
+                  '7', '8', '9'};
+char playerMove;
+bool player1Move = true;
+bool game = true;
+int turns = 0;
+
+int showArrays() {    
+    for (int i = 0; i < 9; i++) {
+        std::cout << board[i] << " ";
+        if (i % 3 == 2 && i > 0) {
+            std::cout << "\n";
+        }
+        else {
+        }
     }
-    std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n";
     return 0;
 }
 
-int guessing() {
-    while (guesses != 0) {
-        std::cout << progress << guesses << "\nEnter 'letter' for a letter or 'word' to guess the word: ";
-        std::cin >> sel;
-        if (sel == "word") {
-            std::cout << "\nGuess the word: ";
-            std::cin >> word;
-            if (word == secretWord) {
-                std::cout << "\nYou Win!\n";
-            }
-            else {
-                std::cout << "\nIncorrect\n";
-                guesses--;
-            }
-        }
-        else if (sel == "letter") {
-            std::cout << "\nEnter a guess: ";
-            std::cin >> guess;
-            std::string tempProgress = progress;
+int userMove() {
+    if (player1Move == true) {
+    std::cout << "Player 1: Pick a number on screen: ";
+    std::cin >> playerMove;
+    }
+    else {
+    std::cout << "Player 2: Pick a number on screen: ";
+    std::cin >> playerMove;
+    }
+    return 0;
+}
 
-            for (int i=0; i<secretWord.length(); i++) {
-            if (guess == secretWord.at(i)) {
-                progress.at(i) = guess;
+int checkBoard() {
+    for (int n = 0; n < 9; n++){
+        if (playerMove == board[n]) { 
+            if (player1Move == true){
+            board[n] = 'X';
+            player1Move = false;
+            turns++;
+            break;
             }
             else {
+            board[n] = 'O';
+            player1Move = true;
+            turns++;
+            break;
             }
-        }
-            if (tempProgress == progress) {
-                std::cout << "There was no letter " << guess << "\n";
-                guesses--;
-            }
-            else {
-                std::cout << "The letter " << guess << " is in the letter\n";
-            }
-        
         }
         else {
-            std::cout << "Invalid response \n";
         }
-        std::cout << "You have " << guesses << " guesses remaining\n";
-
     }
-    if (guesses == 0) { 
-        std::cout << "You lost\n The word was " << secretWord << "\n";
+    return 0;
+}
+
+int checkWin() {
+    if (turns == 8 && game == true){
+        std::cout << "Draw";
+        game = false;
+    }
+    else if (board[0] == 'X' && board[3] == 'X' && board[6] == 'X'){
+        std::cout << "Player 1 Wins!\n";
+	    game = false;
+    }
+    else if (board[0] == 'O' && board[3] == 'O' && board[6] == 'O'){
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[1] == 'X' && board[4] == 'X' && board[7] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[1] == 'O' && board[4] == 'O' && board[7] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[2] == 'X' && board[5] == 'X' && board[8] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[2] == 'O' && board[5] == 'O' && board[8] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[0] == 'X' && board[1] == 'X' && board[2] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[0] == 'O' && board[1] == 'O' && board[2] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[3] == 'X' && board[4] == 'X' && board[5] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[3] == 'O' && board[4] == 'O' && board[5] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[6] == 'X' && board[7] == 'X' && board[8] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[6] == 'O' && board[7] == 'O' && board[8] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[0] == 'X' && board[4] == 'X' && board[8] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[0] == 'O' && board[4] == 'O' && board[8] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else if (board[2] == 'X' && board[4] == 'X' && board[6] == 'X') {
+        std::cout << "Player 1 Wins!\n";
+        game = false;
+    }
+    else if (board[2] == 'O' && board[4] == 'O' && board[6] == 'O') {
+        std::cout << "Player 2 Wins!\n";
+        game = false;
+    }
+    else {
     }
     return 0;
 }
 
 int main() {
-    enterSecret();
-    guessing();
+    while (game == true) {
+    showArrays();
+    userMove();
+    checkBoard();
+    checkWin();
+    }
     return 0;
 }
