@@ -47,11 +47,14 @@ public:
         }
     }
 
-    const void returnFriends(std::string& iName) {
-        std::cout << iName << "'s friends:" << std::endl;
-        for (const std::weak_ptr<User>& fr : friends) {
+    const void returnFriends() {
+        std::cout << name << "'s friends:" << std::endl;
+        for (const auto& fr : friends) {
             if (auto ptr = fr.lock()) {
                 std::cout << ptr->returnName() << std::endl;
+            }
+            else {
+                std::cout << "nada" << std::endl;
             }
         }
     }
@@ -103,6 +106,21 @@ struct Network {
     }
 
     static void removeFriend(const std::string& name1, const std::string& name2) {
+        auto user1 = Network::returnUser(name1);
+        auto user2 = Network::returnUser(name2);
+        for (auto i = user1->getFlist().begin(); i < user1->getFlist().end(); ++i) {
+            if (i->lock()->returnName() == name2) {
+                user1->getFlist().erase(i);
+                break;
+            }
+        }
+        for (auto i = user2->getFlist().begin(); i < user2->getFlist().end(); ++i) {
+            if (i->lock()->returnName() == name1) {
+                user2->getFlist().erase(i);
+                break;
+            }
+        }
+        std::cout << name1 << " and " << name2 << " are no longer friends" << std::endl;
     }
 
     const static void returnVec() { //Returns names of every user in users
@@ -157,7 +175,7 @@ int main() {
                 Network::addFriend(word2, word3);
             }
             else if (word1 == "unfriend") {
-                //Network::removeFriend(word2, word3)
+                Network::removeFriend(word2, word3);
             }
             else if (word1 == "post") {
                 //Make it so all posts from friends show up
@@ -175,7 +193,7 @@ int main() {
                 Network::deleteAccount(word2);
             }
             else if (word1 == "friends"){
-                Network::returnUser(word2)->returnFriends(word2);
+                Network::returnUser(word2)->returnFriends();
             }
             else if (word1 == "posts"){
                 Network::returnUser(word2)->returnPosts();
